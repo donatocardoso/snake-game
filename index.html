@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Snake - Phase One</title>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <link rel="stylesheet" type="text/css" href="css/cssMain.css"/>
+        <link rel="stylesheet" type="text/css" href="css/cssTable.css"/>
+        
+        <script language="javascript" src="js/jsMain.js"></script>
+        <script language="javascript" src="js/purl.js"></script>
+        
+    </head>
+    <body onkeypress="KeyPress();" onload="GeoLocation(); SaveName();" id="body">
+        <header>   
+            <p id="msgStart"></p>
+            <div>
+                <h2>Score</h2>
+                <h1>Points:&nbsp;</h1><div id="points"></div>
+            </div>
+            <button id="btnInfo" onclick="Info(8);">Information</button>
+        </header> 
+        <section>   
+            <article id="game"></article>
+        </section>
+        <footer>
+            <p>&COPY; Copyright 2017 - by Donato Cardoso</p>
+        </footer>
+    </body>
+</html>

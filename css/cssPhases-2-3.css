@@ -1,0 +1,40 @@
+/* 
+    Created on : 10/08/2017, 13:24:16
+    Author     : Donato
+*/
+article table td.wallLeft, td.wallRight, td.wallTop, td.wallBot,
+td.wallFirst, td.wallLast, td.wall, td.wallMiddleTop, td.wallMiddleBot{
+    background: #BA8700;
+    width: 28px;
+    height: 26px;
+}
+article table td.wallLeft, td.wallRight{
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+article table td.wallTop, td.wallBot{
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+}
+
+article table td.wallFirst, td.wallLast, td.wall{
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+}
+
+article table td.wallFirst{
+    border-left: 1px solid black;
+}
+
+article table td.wallMiddleTop, td.wallMiddleBot{
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+article table td.wallMiddleBot{
+    border-bottom: 1px solid black;
+}

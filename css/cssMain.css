@@ -1,0 +1,169 @@
+body {
+    width: 1290px;
+    height: 600px;
+    margin: auto;
+    margin-top: 15px;
+    border: 1px solid #000000;
+}
+
+body div#information, div#enterName, div#winner, div#loser, div#rank{
+    position: absolute;
+    background: #ffffff;
+    border: 3px solid cadetblue;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 30px;
+}
+
+body div#information, div#rank{
+    width: 600px;
+    height: 400px;
+    top: 110px;
+    left: 370px;
+    padding-left: 50px;
+}
+
+body div#information h1, div#rank h1{
+    text-align: center;
+    text-decoration: underline;
+    color: cadetblue;
+}
+
+body div#information label#close, body div#rank label#close{
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    background: crimson;
+    color: floralwhite;
+    float: right;
+    text-align: center;
+    vertical-align: middle;
+}
+
+body div#enterName{
+    width: 250px;
+    height: 170px;
+    top: 230px;
+    left: 500px;
+    text-align: center;
+}
+
+body div#winner, div#loser{
+    width: 250px;
+    height: 180px;
+    top: 220px;
+    left: 530px;
+    text-align: center;
+    
+}
+
+body div#winner h1, div#loser h1{
+    text-decoration: underline;
+    color: cadetblue;
+}
+
+body div#winner button#btnWinner, div#loser button#btnLoser{
+    margin-top: 10px;
+}
+
+body div#rank{
+    top: 80px;
+    height: 465px;
+}
+    
+body div#rank h1{
+    margin-top: 5px; 
+}
+
+body div#rank table#bestScore{
+    border-spacing: 0px;
+    margin-top: -5px;
+}
+
+body div#rank table#bestScore td.title{
+    background: gainsboro;
+    font-weight: bold;
+    padding: 5px;
+}
+
+body div#rank table#bestScore td.name, td.local, td.date, td.point{
+    padding: 5px;
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+body div#rank table#bestScore td.name{
+    border-left: none;
+}
+
+header {
+    width: 1290px;
+    height: 50px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 13pt;
+}
+
+header div{
+    display: inline-block;
+    position: absolute;
+    left: 600px;
+    color: gold;
+    text-shadow: 1px 0px 0px black, 
+                 -1px 0px 0px black, 
+                 0px 1px 0px black, 
+                 0px -1px 0px black;
+}
+
+header div div#points{
+    left: 70px;
+}
+
+header div h1{
+    font-size: 15pt;
+    margin-top: -10px;
+    display: inline-block;
+}
+
+header div h2{
+    font-size: 8pt;
+    margin-top: 2px;
+}
+
+header button#start{
+    float: left;
+    margin: 15px auto auto 15px;
+}
+
+header p{
+    color: rgb(8, 173, 123);
+    font-weight: bold;
+    float:left;
+    margin: 12px auto auto 10px;
+}
+
+header button#btnInfo{
+    float: right;
+    margin: 15px 15px auto auto;
+}
+
+section {
+    width: 1290px;
+    height: 500px;
+    background: #000000;
+}
+
+section article {
+    padding: auto;
+    padding-top: 8px;
+}
+
+footer {
+    width: 1290px;
+    height: 49px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 13pt;
+}
+
+footer p{
+    margin-top: 12px;
+    text-align: center;
+}

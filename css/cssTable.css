@@ -1,0 +1,37 @@
+article table{
+    border-spacing: 0px;
+    margin: auto;
+}
+
+article table tr{
+    padding: 0px;
+    margin: -1px auto;
+}
+
+article table td.field{
+    width: 28px;
+    height: 28px;
+    background: #dddddd;
+    padding: auto;
+    margin: 0px;
+}
+
+article table div#C0 {
+    width: 26px;
+    height: 26px;
+    margin-bottom: -2px;
+    border: 1px solid #000000;
+}
+
+article table div.corpo {
+    width: 26px;
+    height: 26px;
+    margin-bottom: -2px;
+    border: 1px solid #000000;
+}
+
+article table div#food{
+    width: 28px;
+    height: 28px;
+    margin-bottom: -2px;
+}
