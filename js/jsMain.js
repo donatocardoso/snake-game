@@ -1,14 +1,14 @@
 //Declaration of variables
-//Declaração de variáveis
+//Declaraï¿½ï¿½o de variï¿½veis
 var columnLeft=[],columnRight=[], direction=["1"], wallInsideField=[], arrayRank=[];
 var celulaTable=0, lastBodySnake=0, numberBody=2, snakeBody=2, time=600, phase=1;
 var snake, neck, follow, ate, keyPress, RepeatWalk, city, state, country;
 var name, point, geoLocation, local;
 var onStart = false, pause = false, hit = false, rankOn = false;
 
-//Event declaration - Declaração de evento
+//Event declaration - Declaraï¿½ï¿½o de evento
 
-//Receives the user's GeoLocation - Recebe a GeoLocalização do usuário
+//Receives the user's GeoLocation - Recebe a GeoLocalizaï¿½ï¿½o do usuï¿½rio
 function GeoLocation(){    
     navigator.geolocation.getCurrentPosition(function(posicao) {
         var url =   "http://nominatim.openstreetmap.org/reverse?lat="+posicao.coords.latitude+
@@ -20,7 +20,7 @@ function GeoLocation(){
     });
 }
 
-//Saves the user's location - Salva a localização do usuário
+//Saves the user's location - Salva a localizaï¿½ï¿½o do usuï¿½rio
 function FillInData(data) {
     city = data.address.city;
     state = data.address.state;
@@ -28,7 +28,7 @@ function FillInData(data) {
     local = city+" - "+state+" - "+country;
 }
 
-//Reads the key that was pressed - Lê a tecla que foi pressionada
+//Reads the key that was pressed - Lï¿½ a tecla que foi pressionada
 function KeyPress(){
     document.addEventListener('keydown', function(e) {
         e = e || window.event;
@@ -45,7 +45,7 @@ function KeyPress(){
     });
 }
 
-//Saves the user name - Salva o nome do usuário
+//Saves the user name - Salva o nome do usuï¿½rio
 function SaveName() {
     if(onStart === false){
         document.getElementById('btnInfo').setAttribute('disabled', 'disable');
@@ -64,7 +64,7 @@ function SaveName() {
     }
 }
 
-//Enable button to save user name - Habilita o botão para salvar o nome do usuário
+//Enable button to save user name - Habilita o botï¿½o para salvar o nome do usuï¿½rio
 function EnableBtn(){
     var letters = document.getElementById('name').value;
     if(letters.length >= 3){
@@ -76,7 +76,7 @@ function EnableBtn(){
 
 //Start the game - Inicia o jogo
 function Start(){  
-    //Starts the header - Inicia o cabeçalho
+    //Starts the header - Inicia o cabeï¿½alho
     if(phase === 1){
         name = document.getElementById('name').value;
         document.getElementById('enterName').remove();
@@ -146,7 +146,7 @@ function CreateFood() {
         validPosition = true;
         var color = Color();
         
-        //Draw a position - Sortear uma posição
+        //Draw a position - Sortear uma posiï¿½ï¿½o
         var positionFood = Math.round(Math.random()*608);
         for (i = 0; i <= numberBody; i++){
             if (positionFood == document.getElementById('C'+i).parentNode.id) {
@@ -154,7 +154,7 @@ function CreateFood() {
             }
         }
         
-        //Checks whether the position is valid - Verifica se a posição é válida
+        //Checks whether the position is valid - Verifica se a posiï¿½ï¿½o ï¿½ vï¿½lida
         if(phase === 2 || phase === 3){
             //Wall left and right - Parede esquerda e direita
             for(i=1; i<=(columnLeft.length-2); i++){
@@ -172,7 +172,7 @@ function CreateFood() {
                 }
             }
             
-            //obstacles - obstáculos
+            //obstacles - obstï¿½culos
             if(phase === 3){
                 for(i=0; i<=wallInsideField.length-1; i++){
                     if(positionFood == wallInsideField[i]){
@@ -437,11 +437,11 @@ function Info(keyPress){
 
         var createInformation = "<label id='close' onclick='CloseInfo();'>X</label>";
         createInformation += "<h1>INFORMATIONS</h1>";
-        createInformation += "<p><span>1. <img src='img/space.png'/> The Space key starts the game.<br/></span>";
-        createInformation += "<span>2. <img src='img/setas.jpg'/> The arrows control the snake.<br/></span>";
-        createInformation += "<span>3. <img src='img/wasd.png'/> The keys W A S and D also control the snake.<br/></span>";
-        createInformation += "<span>4. To pass the stage you need to make 30 points.<br/></span>";
-        createInformation += "<span>5. You can see the ranking of the best games with the F2 key.<br/></span></p>";
+        createInformation += "<span>1. <img src='img/setas.jpg'/> The arrows control the snake.<br/></span>";
+        createInformation += "<span>2. <img src='img/wasd.png'/> The keys W A S and D also control the snake.<br/></span>";
+        createInformation += "<span>3. To pass the stage you need to make 30 points.<br/></span>";
+        createInformation += "<span>4. You can see the ranking of the best games with the F2 key.<br/></span>";
+        createInformation += "<span>5. You can see the informatons about the game with the BACKSPACE key.<br/></span></p>";
 
         information.innerHTML = createInformation;
         document.getElementById('body').appendChild(information);
@@ -517,11 +517,13 @@ function Rank(keyPress){
 
         var div = document.createElement('div');
         div.setAttribute('id', 'rank');
-        div.innerHTML = "<label id='close' onclick='CloseRank();'>X</label>"+
-                        "<h1>BEST SCORES !!!</h1>";
+        div.innerHTML = "<label id='close' onclick='CloseRank();'>X</label>";
+
         document.getElementById('body').appendChild(div);
         
         if(arrayRank !== null){
+            div.innerHTML += "<h1>BEST SCORES !!!</h1>";
+
             var table = document.createElement('table');
             table.setAttribute('id', 'bestScore');
             var createTable = "<tr>";
@@ -542,7 +544,7 @@ function Rank(keyPress){
             table.innerHTML = createTable;
             document.getElementById('rank').appendChild(table);
         }else{
-            div.innerHTML = "<h2>There are no scoring records...</h2>";
+            div.innerHTML += "<h2>There are no scoring records...</h2>";
         }
     }
 }

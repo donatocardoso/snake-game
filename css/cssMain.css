@@ -8,6 +8,8 @@ body {
 
 body div#information, div#enterName, div#winner, div#loser, div#rank{
     position: absolute;
+    left: 50%;
+    top: 50%;
     background: #ffffff;
     border: 3px solid cadetblue;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -17,8 +19,8 @@ body div#information, div#enterName, div#winner, div#loser, div#rank{
 body div#information, div#rank{
     width: 600px;
     height: 400px;
-    top: 110px;
-    left: 370px;
+    margin-left: -300px;
+    margin-top: -200px;
     padding-left: 50px;
 }
 
@@ -42,18 +44,17 @@ body div#information label#close, body div#rank label#close{
 body div#enterName{
     width: 250px;
     height: 170px;
-    top: 230px;
-    left: 500px;
     text-align: center;
+    margin-left: -125px;
+    margin-top: -85px;
 }
 
 body div#winner, div#loser{
     width: 250px;
     height: 180px;
-    top: 220px;
-    left: 530px;
     text-align: center;
-    
+    margin-left: -125px;
+    margin-top: -90px;
 }
 
 body div#winner h1, div#loser h1{
@@ -63,11 +64,6 @@ body div#winner h1, div#loser h1{
 
 body div#winner button#btnWinner, div#loser button#btnLoser{
     margin-top: 10px;
-}
-
-body div#rank{
-    top: 80px;
-    height: 465px;
 }
     
 body div#rank h1{
