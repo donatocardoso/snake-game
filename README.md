@@ -8,4 +8,4 @@ Funcionalidade:
 	- Salvar Geolocalização.
 	- Salvar pontuação.
 	- Salvar hora e data da partida.
-	- Ver as 10 melhores pontuações (Rank).
+	- Ver as 10 melhores pontuações (Rank)..
