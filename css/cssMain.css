@@ -1,8 +1,11 @@
 body {
+    position: absolute;
+    left: 50%;
+    top: 50%;
     width: 1290px;
     height: 600px;
-    margin: auto;
-    margin-top: 15px;
+    margin-top: -300px;
+    margin-left: -645px;
     border: 1px solid #000000;
 }
 
