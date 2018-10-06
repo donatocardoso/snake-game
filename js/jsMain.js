@@ -1,470 +1,170 @@
-//Declaration of variables
-//Declara��o de vari�veis
-var columnLeft=[],columnRight=[], direction=["1"], wallInsideField=[], arrayRank=[];
-var celulaTable=0, lastBodySnake=0, numberBody=2, snakeBody=2, time=600, phase=1;
-var snake, neck, follow, ate, keyPress, RepeatWalk, city, state, country;
-var name, point, geoLocation, local;
-var onStart = false, pause = false, hit = false, rankOn = false;
+// Declaration of letiables
+let wallTop = [], wallRight = [], wallBottom = [], wallLeft = [], direction = ["RIGHT"], wallInsideField=[];
+let arrayRank=[], countRow = 0, countColumn = 0;
+let celulaTable=0, lastBodySnake=0, numberBody = 3, time=600, phase=1;
+let snake, neck, follow, ate, RepeatWalk, city, state, country;
+let name, point = 0, geoLocation, local;
+let onStart = false, pause = false, rankOn = false;
 
-//Event declaration - Declara��o de evento
+// Event declaration
+$(document).ready(function()
+{
+    // Receives the user"s GeoLocation
+    $("body").ready(function()
+    {
+        navigator.geolocation.getCurrentPosition(function(posicao)
+        {
+            let url =   "http://nominatim.openstreetmap.org/reverse?lat=" + posicao.coords.latitude+
+                        "&lon=" + posicao.coords.longitude + "&format=json&json_callback=fillInData";
 
-//Receives the user's GeoLocation - Recebe a GeoLocaliza��o do usu�rio
-function GeoLocation(){    
-    navigator.geolocation.getCurrentPosition(function(posicao) {
-        var url =   "http://nominatim.openstreetmap.org/reverse?lat="+posicao.coords.latitude+
-                    "&lon="+posicao.coords.longitude+"&format=json&json_callback=FillInData";
-
-        var script = document.createElement('script');
-        script.src = url;
-        document.body.appendChild(script);
+            $("body").append($("<script></script>").attr("src", url));
+        });
     });
-}
 
-//Saves the user's location - Salva a localiza��o do usu�rio
-function FillInData(data) {
+    //Enable button to save user name
+    $("input#name").keypress(function()
+    {
+        $("input#btnName").prop("disabled", $("input#name").val().length < 2);
+    });
+
+    // Reads the key that was pressed
+    $("body").keypress(function(e)
+    {
+        e = e || window.event;
+        let keyPress = e.key || e.code;
+
+        let keys = [
+            "w", "a", "s", "d", "KeyW", "KeyA", "KeyS", "KeyD",
+            "ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"
+        ];
+        
+        if($("#C0").length && keys.includes(keyPress))
+        {
+            let goesBy = (
+                (["a", "KeyA", "ArrowLeft"].includes(keyPress) && direction[0] != "RIGHT" )
+                    ? "LEFT"
+                    : (["w", "KeyW", "ArrowUp"].includes(keyPress) && direction[0] != "BOTTOM" )
+                        ? "TOP"
+                        : (["d", "KeyD", "ArrowRight"].includes(keyPress) && direction[0] != "LEFT" )
+                            ? "RIGHT"
+                            : (["s", "KeyS", "ArrowDown"].includes(keyPress) && direction[0] != "TOP" )
+                                ? "BOTTOM"
+                                : null
+            );
+    
+            if(goesBy)
+                direction.unshift(goesBy);
+        }
+        else if(keyPress == 8)
+        {
+            Info(keyPress);            
+        }
+        else if(keyPress == 113)
+        {
+            Rank(keyPress);
+        }
+    });
+});
+
+// Saves the user"s location
+function fillInData(data) {
     city = data.address.city;
     state = data.address.state;
     country = data.address.country;
     local = city+" - "+state+" - "+country;
 }
 
-//Reads the key that was pressed - L� a tecla que foi pressionada
-function KeyPress(){
-    document.addEventListener('keydown', function(e) {
-        e = e || window.event;
-        keyPress = e.which || e.keyCode;
-         if(document.getElementById('C0') != undefined && (keyPress == 37 || keyPress == 38 || keyPress == 39 || keyPress == 40 || keyPress == 65 || keyPress == 68 || keyPress == 83 || keyPress == 87)){
-            DirectionSnake(keyPress);
-            
-        }else if(keyPress == 8){
-            Info(keyPress);
-            
-        }else if(keyPress == 113){
-            Rank(keyPress);
-        }
-    });
-}
-
-//Saves the user name - Salva o nome do usu�rio
-function SaveName() {
-    if(onStart === false){
-        document.getElementById('btnInfo').setAttribute('disabled', 'disable');
-        
-        var enterName = document.createElement('div');
-        enterName.setAttribute('id','enterName');
-
-        var createEnterName = "<p><h1>ENTER WITH YOUR NAME:</h1>";
-        createEnterName += "<input type='text' id='name' placeholder='Name' maxlength='20' autofocus oninput='EnableBtn();'/><br/>";
-        createEnterName += "<input type='submit' id='btnName' onclick='Start();' disabled='disable'/></p>";
-
-        enterName.innerHTML = createEnterName;
-        document.getElementById('body').appendChild(enterName);
-        
-        onStart = true;
-    }
-}
-
-//Enable button to save user name - Habilita o bot�o para salvar o nome do usu�rio
-function EnableBtn(){
-    var letters = document.getElementById('name').value;
-    if(letters.length >= 3){
-        document.getElementById('btnName').removeAttribute('disabled');
-    }else{
-        document.getElementById('btnName').setAttribute('disabled', 'disable');
-    }
-}
-
-//Start the game - Inicia o jogo
-function Start(){  
-    //Starts the header - Inicia o cabe�alho
-    if(phase === 1){
-        name = document.getElementById('name').value;
-        document.getElementById('enterName').remove();
-    }else{
-        onStart = true;
-    }
-    document.getElementById('msgStart').innerHTML = name;
-    document.getElementById('points').innerHTML = 0;
-    document.getElementById('btnInfo').removeAttribute('disabled');
-    document.getElementById('btnInfo').innerHTML = "PAUSE";
+// Start the game
+async function start()
+{
+    $("div#load").hide();
+    $("#msgStart").html($("#name").val());
+    $("#btnInfo").prop("disabled", false).text("PAUSE");
     
-    LoadBackground();
-    
-    //Creates the snake - Cria a cobra
-    for(i=0; i<3; i++){
-        snake = document.createElement('div');
-        snake.setAttribute('id','C'+i);
-        snake.setAttribute('class', 'corpo');
+    await loadBackground();
 
-        var color = Color();
-        snake.setAttribute('style', 'background:'+color);
-        
-        var x=0;
-        if(phase === 2 || phase === 3){
-            x=1;
-            lastBodySnake = '305';
-        }else{
-            lastBodySnake = '304';
-        }
-        document.getElementById(''+(306-i+x)).appendChild(snake);
+    // Creates the snake
+    for(i = 0; i < 3; i++)
+    {
+        lastBodySnake = 306 - i;
+
+        $("td#" + (306 - i + (phase == 1 ? 0 : 1))).html(
+            $("<div></div>").attr("id", "C" + i).attr("class", "corpo").css("background", color())
+        );
     }
     
-    CreateFood();
-    ControlTime();
+    await createFood();
+
+    setRepeatWalk();
 }
 
-//Start the game background - Inicia o fundo do jogo
-function LoadBackground() {
-    //Creates the background - Cria o fundo
-    var table = document.createElement('table');
-    table.setAttribute('id', 'background');
+function setRepeatWalk()
+{
+    repeatWalk = setInterval(function ()
+    {
+        let toCell = nextCell();
 
-    var createTable = "";
-    for (u = 0; u <= 15; u++) {
-        createTable += "<tr>";
+        if(!hit(toCell))
+        {
+            console.log($("#food")[0].offsetParent.id == $(toCell)[0].id);
 
-        for (i = 0; i <= 37; i++) {
-            createTable += "<td class='field' id=" + ((u * 38) + i) + "></td>";
+            if($("#food")[0].offsetParent.id == $(toCell)[0].id)
+            {
+                point++;
+                $("#points").html(point);
+
+                var snakeBody = $("<div></div>")
+                                .attr("id", "C" + numberBody)
+                                .attr("class", "corpo")
+                                .css("background", $("#food").css("background"));
+
+                numberBody++;
+                $("#food").remove();
+
+                if (time > 100)
+                {
+                    time -= 50;
+
+                    clearInterval(repeatWalk);
+                    setRepeatWalk();
+                }
+
+                ((point <= 29 && phase == 1) || 
+                (point <= 69 && phase == 2) || 
+                (phase == 3))
+                    ? createFood()
+                    : PassedPhase();
+            } 
+
+            for (let i = 0; i < numberBody; i++)
+            {
+                follow = $("#C" + i)[0].offsetParent;
+                    
+                if (snakeBody && (numberBody - 2) == i)
+                {
+                    $(toCell).html($("#C" + i));
+                    $(follow).html(snakeBody);
+                    snakeBody = null;
+                }   
+                else
+                    $(toCell).html($("#C" + i));
+
+                toCell = follow;
+            }
         }
-        createTable += "</tr>";
-    }
-    table.innerHTML = createTable;
-    document.getElementById('game').appendChild(table);
-    
-    // Get the id's from the first column and last column - Pega as id's da primeira coluna e ultima coluna
-    columnRight[0] = 37;
-    for (i = 0; i <= 15; i++) {
-        columnLeft[i] = i * 38;
-        columnRight[i + 1] = columnRight[i] + 38;
-    }
+        else
+            SaveCache();
+    }, time);
 }
 
-//Create food - Cria as comidas
-function CreateFood() {
-    var validPosition = false;
-    while(validPosition === false){
-        validPosition = true;
-        var color = Color();
-        
-        //Draw a position - Sortear uma posi��o
-        var positionFood = Math.round(Math.random()*608);
-        for (i = 0; i <= numberBody; i++){
-            if (positionFood == document.getElementById('C'+i).parentNode.id) {
-                validPosition = false;
-            }
-        }
-        
-        //Checks whether the position is valid - Verifica se a posi��o � v�lida
-        if(phase === 2 || phase === 3){
-            //Wall left and right - Parede esquerda e direita
-            for(i=1; i<=(columnLeft.length-2); i++){
-                if(positionFood == columnLeft[i] || positionFood == columnRight[i]){
-                    validPosition = false;
-                    break;
-                }
-            }
-            
-            //Top and bottom wall - Parede de cima e debaixo
-            for(i=1; i<=36; i++){
-                if(positionFood == i || positionFood == (i+570)){
-                    validPosition = false;
-                    break;
-                }
-            }
-            
-            //obstacles - obst�culos
-            if(phase === 3){
-                for(i=0; i<=wallInsideField.length-1; i++){
-                    if(positionFood == wallInsideField[i]){
-                        validPosition = false;
-                        break;
-                    }
-                }
-            }
-            
-            //The corners of the field - Os cantos do campo
-            if(positionFood == 1 || positionFood == 37 || positionFood == 570 || positionFood == 607){
-                validPosition = false;
-            }
-        }
-    }
-    
-    var food = document.createElement('div');
-    food.setAttribute('id','food');
-    food.style.background = color;
-    document.getElementById(positionFood).appendChild(food);
-}
+// Get a random color
+function color() {
+    let r, g, b, validColor = false;
 
-//
-function DirectionSnake(keyPress){
-    var goesBy;
-    if(onStart === true){
-                        
-        if(keyPress == 37 || keyPress == 65){
-            if(direction[0] !== "1" && direction[1] !== "1"){    
-                goesBy = "-1";
-            }
-        }else if(keyPress == 38 || keyPress == 87){
-            if(direction[0] !== "38" && direction[1] !== "38"){
-                goesBy = "-38";
-            }
-        }else if(keyPress == 39 || keyPress == 68){
-            if(direction[0] !== "-1" && direction[1] !== "-1"){
-                goesBy = "1";
-            }
-        }else if(keyPress == 40 || keyPress == 83){
-            if(direction[0] !== "-38" && direction[1] !== "-38"){
-                goesBy = "38";
-            }
-        }
-
-        var x = direction.length;
-        if(direction[x-1] !== goesBy && goesBy !== undefined && direction.length < 3){
-            direction.push(goesBy);
-        }
-    }
-}
-
-function ControlTime(){
-    RepeatWalk = setInterval(function (){
-        var teleport = false; 
-        snake = document.getElementById('C0');
-        celulaTable = snake.parentNode.id;
-        neck = celulaTable; 
-        
-        if(direction[1] != undefined && direction[1] != null && direction[1] != ""){
-            direction.shift();
-        }
-
-        switch(direction[0]){
-            case "-1":
-                for(i=0; i<=columnLeft.length; i++){
-                    if(columnLeft[i] == (celulaTable)){
-                        celulaTable = parseInt(celulaTable)+37;
-                        teleport = true;
-                    }
-                }
-                if(teleport === false){
-                    celulaTable--;
-                }
-                break;
-            case "-38":
-                celulaTable-= 38;
-                if(celulaTable < 0){
-                    celulaTable = 608 + parseInt(celulaTable);
-                }
-                break; 
-            case "1":
-                for(i=0; i<=columnRight.length; i++){
-                    if(columnRight[i] == (celulaTable)){
-                        celulaTable = parseInt(celulaTable)-37;
-                        teleport = true;
-                    }
-                }
-                if(teleport === false){
-                    celulaTable++;
-                }
-                break;
-            case "38":
-                celulaTable = parseInt(celulaTable) + 38;
-
-                if (celulaTable > 607) {
-                    celulaTable = parseInt(celulaTable) - 608;
-                }
-                break;
-            default:
-                break;
-        }
-        
-        Hit();
-        var celulaFood = document.getElementById('food').parentNode.id;
-        if(hit === false && celulaFood == celulaTable){
-            point = document.getElementById('points').innerHTML;
-            document.getElementById('points').innerHTML = (parseInt(point)+1);
-
-            numberBody += 1;
-            snakeBody = document.createElement('div');
-            snakeBody.setAttribute('class', 'corpo');
-            snakeBody.setAttribute('id', 'C' + numberBody);
-            snakeBody.style.background = document.getElementById('food').style.background;
-
-            document.getElementById('food').remove();
-
-            if (numberBody > 1) {
-                document.getElementById(follow).appendChild(snakeBody);
-            }
-            document.getElementById(celulaTable).appendChild(snake);
-            FollowBody();
-
-            if (time > 100) {
-                time -= 50;
-                clearInterval(RepeatWalk);
-                ControlTime();
-            }
-
-            if((point < 29 && phase != 2) || (point < 69 && phase == 2)){
-                CreateFood();
-            }else{
-                if(phase != 3){
-                    PassedPhase();
-                }else{
-                    CreateFood();
-                }
-            }
-        } else {
-            if(hit === false){
-                document.getElementById(celulaTable).appendChild(snake);
-                FollowBody();
-            }
-        }  
-    },time);
-}
-
-function Hit() {
-    var finishGame = false;
-    if(phase === 2 || phase === 3){
-        for(i=1; i<=(columnLeft.length-2); i++){
-            if(celulaTable == columnLeft[i] || celulaTable == columnRight[i]){
-                finishGame = true;
-            }
-        }
-        
-        for(i=1; i<=36; i++){
-            if(celulaTable == i || celulaTable == (i+570)){
-                finishGame = true;
-            }
-        }
-        if(phase === 3){
-            for(i=0; i<=wallInsideField.length-1; i++){
-                if(celulaTable == wallInsideField[i]){
-                    finishGame = true;
-                }
-            }
-        }
-    }
-        
-    if(numberBody > 3){
-        for (i=3; i<=numberBody; i++) {
-            if (celulaTable == document.getElementById('C'+i).parentNode.id){
-                finishGame = true;
-            }
-        }
-    }
-    
-    if(finishGame === true){
-        clearInterval(RepeatWalk); 
-        hit = true;
-
-        var dataJson = localStorage.getItem("Rank");
-        arrayRank = JSON.parse(dataJson);
-
-        if(arrayRank != null){
-            for(i=0; (i<9 && i<arrayRank.length); i++){
-                if(document.getElementById("points").innerHTML > arrayRank[i].Points){
-                    CreateObjPunctuation(i);
-                    i = 10;
-                }else{
-                    if(i<8){
-                        CreateObjPunctuation(i+1);
-                        break;
-                    }
-                }
-            }
-        }else{  
-            arrayRank = [];
-            var txtJson = JSON.stringify(arrayRank);
-            localStorage.setItem("Rank", txtJson);
-            CreateObjPunctuation(0);
-        }
-    }
-}
-
-function CreateObjPunctuation(i){
-    if(phase == 2 || phase == 3){
-        var url = purl(window.location.href);
-        geoLocation = url.param('Location');
-    }else{
-        geoLocation = local;
-    }
-
-    var objInformations = { 
-        Name: name,
-        Location: geoLocation,
-        DayHour: new Date(),
-        Points: document.getElementById("points").innerHTML
-    };
-    
-    var dataJson = localStorage.getItem("Rank");
-    arrayRank = JSON.parse(dataJson);
-    if(i==0){
-        arrayRank[i] = objInformations;
-    }else{
-        arrayRank.splice(i,0,objInformations);
-        if(arrayRank.length == 9 ){
-           arrayRank.splice((arrayRank.length-1),1);
-        }
-    }
-    var txtJson = JSON.stringify(arrayRank);
-    localStorage.setItem("Rank", txtJson);
-
-    var winner = document.createElement('div');
-    winner.setAttribute('id','loser');
-
-    var createText = "<h1>LOSER !!!</h1>";
-    createText += "<p>How annoying, you lost ...<br/>";
-    createText += "<button id='btnLoser' onclick='Reset();'>BACK</button></p>";
-
-    winner.innerHTML = createText;
-    document.getElementById('body').appendChild(winner);
-}
-
-function FollowBody() {
-    for (i = 1; i <= numberBody; i++){
-        follow = document.getElementById('C'+i).parentNode.id;
-        document.getElementById(neck).appendChild(document.getElementById('C'+i));
-        neck = follow;
-    }
-}
-
-function Info(keyPress){
-    if(keyPress == 8 && document.getElementById('btnInfo').disabled == false){
-        if(onStart === true){
-            clearInterval(RepeatWalk);
-            document.getElementById('btnInfo').innerHTML = "CONTINUE";
-        }
-        var information = document.createElement('div');
-        information.setAttribute('id','information');
-
-        var createInformation = "<label id='close' onclick='CloseInfo();'>X</label>";
-        createInformation += "<h1>INFORMATIONS</h1>";
-        createInformation += "<span>1. <img src='img/setas.jpg'/> The arrows control the snake.<br/></span>";
-        createInformation += "<span>2. <img src='img/wasd.png'/> The keys W A S and D also control the snake.<br/></span>";
-        createInformation += "<span>3. To pass the stage you need to make 30 points.<br/></span>";
-        createInformation += "<span>4. You can see the ranking of the best games with the F2 key.<br/></span>";
-        createInformation += "<span>5. You can see the informatons about the game with the BACKSPACE key.<br/></span></p>";
-
-        information.innerHTML = createInformation;
-        document.getElementById('body').appendChild(information);
-        
-        document.getElementById('btnInfo').setAttribute('disabled', 'disable');
-    }
-}
-
-function CloseInfo(){
-    document.getElementById('information').remove();
-    if(onStart === true && document.getElementById('rank') == undefined){
-        document.getElementById('btnInfo').innerHTML = "PAUSE";
-        document.getElementById('btnInfo').removeAttribute('disabled');
-        ControlTime();
-    }
-}
-
-function Color(){
-    var validColor = false;
-    while(validColor === false){
-        var r = Math.round(Math.random()*256);
-        var g = Math.round(Math.random()*256);
-        var b = Math.round(Math.random()*256);
+    while(!validColor) {
+        r = Math.round(Math.random()*256);
+        g = Math.round(Math.random()*256);
+        b = Math.round(Math.random()*256);
 
         if((r!==221 && g!==221 && b!==221) && (r!==186 && g!==135 && b!==0)){
             validColor = true;
@@ -474,28 +174,267 @@ function Color(){
     return "rgb("+r+","+g+","+b+")";
 }
 
+// Start the game background
+function loadBackground()
+{
+    // Creates the background
+    let table = $("<table></table>").attr("id", "background");
+
+    let createTable = "";
+
+    let divGame = {
+        width: $("div#game").css("width").replace("px", ""),
+        height: $("div#game").css("height").replace("px", "")
+    };
+
+    countRow = Math.floor(divGame.height / 28);
+    countColumn = Math.floor(divGame.width / 28);
+
+    for (let u = 1; u <= countRow; u++)
+    {
+        //  Get the id"s from the first column and last column
+        wallLeft.push((u * countColumn) - (countColumn - 1));
+        wallRight.push(u * countColumn);
+
+        createTable += "<tr>";
+
+        for (let i = 1; i <= countColumn; i++)
+        {
+            if(u == 1)
+            {
+                wallTop.push(i);
+                wallBottom.push((countColumn * countRow) - (i - 1));
+            }
+
+            createTable += "<td class='field' id='" + (((u - 1) * countColumn) + i) + "'></td>";
+        }
+        
+        createTable += "</tr>";
+    }
+
+    $(table).html(createTable);
+    $("#game").html($(table));
+}
+
+// Create food
+function createFood()
+{
+    let validPosition = true;
+
+    // Draw a position
+    let positionFood = Math.round(Math.random() * parseInt($("td").length));
+
+    for (let corpo in $(".corpo"))
+        if (positionFood == $(corpo).offsetParent.id)
+            validPosition = false;
+
+    // Checks whether the position is valid
+    if(phase == 2 || phase == 3)
+    {
+        validPosition = !wallTop.includes(positionFood) ||
+                        !wallRight.includes(positionFood) ||
+                        !wallBottom.includes(positionFood) ||
+                        !wallLeft.includes(positionFood) ||
+                        !wallInsideField.includes(positionFood); // Obstacles
+    }
+
+    if(validPosition)
+    {
+        let food = $("<div></div>").attr("id","food").css("background", color());
+        $("td#" + positionFood).html(food);
+
+        return;
+    }
+
+    return createFood();
+}
+
+// Get the next cell
+function nextCell()
+{
+    let headSnake = parseInt($("#C0")[0].offsetParent.id);
+
+    if(direction[2])
+        direction.pop();
+
+    if(direction[0] == "LEFT")
+    {
+        return $("td#" + (wallLeft.includes(headSnake)
+                    ? parseInt(headSnake + (countColumn - 1))
+                    : parseInt(headSnake - 1)));
+    }
+    else if(direction[0] == "TOP")
+    {
+        return $("td#" + (wallTop.includes(headSnake)
+                    ? parseInt((countRow * countColumn) - (countColumn - headSnake))
+                    : parseInt(headSnake - countColumn)));
+    }
+    else if(direction[0] == "RIGHT")
+    {
+        return $("td#" + (wallRight.includes(headSnake) 
+                    ? parseInt((headSnake + 1) - countColumn)
+                    : parseInt(headSnake + 1)));
+    }
+    else // if(direction[0] ==  "BOTTOM")
+    {
+        return $("td#" + (wallBottom.includes(headSnake)
+                    ? parseInt((countColumn + headSnake) - (countRow * countColumn))
+                    : parseInt(headSnake + countColumn)));
+    }
+}
+
+// Verify if the snake hit the obstacles
+function hit(toCell)
+{
+    if(phase == 2 || phase == 3)
+    {
+        return  wallTop.includes($(toCell)[0].id)          ||
+                wallRight.includes($(toCell)[0].id)        ||
+                wallBottom.includes($(toCell)[0].id)       ||
+                wallLeft.includes($(toCell)[0].id)         ||
+                wallInsideField.includes($(toCell)[0].id);
+        
+        for(let i = 1; i <= 36; i++)
+            if($(toCell)[0].id == i || $(toCell)[0].id == (i + 570))
+                return true;
+    }
+        
+    if(numberBody > 3)
+        for (let i = 3; i < numberBody; i++)
+            if ($(toCell)[0].id == $("#C" + i)[0].offsetParent.id) 
+                return true;
+}
+
+function SaveCache()
+{
+    clearInterval(RepeatWalk); 
+
+    let dataJson = localStorage.getItem("Rank");
+    arrayRank = JSON.parse(dataJson);
+
+    if(arrayRank)
+    {
+        for(i=0; (i < 9 && i < arrayRank.length); i++)
+        {
+            if($("#points").innerHTML > arrayRank[i].Points)
+            {
+                CreateObjPunctuation(i);
+                i = 10;
+            }
+            else
+            {
+                if(i<8)
+                {
+                    CreateObjPunctuation(i+1);
+                    break;
+                }
+            }
+        }
+    }
+    else
+    {  
+        arrayRank = [];
+        let txtJson = JSON.stringify(arrayRank);
+        localStorage.setItem("Rank", txtJson);
+        CreateObjPunctuation(0);
+    }
+}
+
+function CreateObjPunctuation(i){
+    if(phase == 2 || phase == 3){
+        let url = purl(window.location.href);
+        geoLocation = url.param("Location");
+    }else{
+        geoLocation = local;
+    }
+
+    let objInformations = { 
+        Name: name,
+        Location: geoLocation,
+        DayHour: new Date(),
+        Points: $("#points").innerHTML
+    };
+    
+    let dataJson = localStorage.getItem("Rank");
+    arrayRank = JSON.parse(dataJson);
+    if(i==0){
+        arrayRank[i] = objInformations;
+    }else{
+        arrayRank.splice(i,0,objInformations);
+        if(arrayRank.length == 9 ){
+           arrayRank.splice((arrayRank.length-1),1);
+        }
+    }
+    let txtJson = JSON.stringify(arrayRank);
+    localStorage.setItem("Rank", txtJson);
+
+    let winner = document.createElement("div");
+    winner.setAttribute("id","loser");
+
+    let createText = "<h1>LOSER !!!</h1>";
+    createText += "<p>How annoying, you lost ...<br/>";
+    createText += "<button id='btnLoser' onclick='Reset();'>BACK</button></p>";
+
+    winner.innerHTML = createText;
+    $("#body").html(winner);
+}
+
+function Info(keyPress){
+    if(keyPress == 8 && $("#btnInfo").disabled == false){
+        if(onStart == true){
+            clearInterval(RepeatWalk);
+            $("#btnInfo").innerHTML = "CONTINUE";
+        }
+        let information = document.createElement("div");
+        information.setAttribute("id","information");
+
+        let createInformation = "<label id='close' onclick='CloseInfo();'>X</label>";
+        createInformation += "<h1>INFORMATIONS</h1>";
+        createInformation += "<span>1. <img src='img/setas.jpg'/> The arrows control the snake.<br/></span>";
+        createInformation += "<span>2. <img src='img/wasd.png'/> The keys W A S and D also control the snake.<br/></span>";
+        createInformation += "<span>3. To pass the stage you need to make 30 points.<br/></span>";
+        createInformation += "<span>4. You can see the ranking of the best games with the F2 key.<br/></span>";
+        createInformation += "<span>5. You can see the informatons about the game with the BACKSPACE key.<br/></span></p>";
+
+        information.innerHTML = createInformation;
+        $("#body").html(information);
+        
+        $("#btnInfo").setAttribute("disabled", "disable");
+    }
+}
+
+function CloseInfo(){
+    $("#information").hide();
+
+    if(onStart == true && $("#rank") == undefined){
+        $("#btnInfo").text("PAUSE");
+        $("#btnInfo").prop("disabled", false);
+        RepeatWalk();
+    }
+}
+
 function PassedPhase(){
     clearInterval(RepeatWalk);
     
-    var winner = document.createElement('div');
-    winner.setAttribute('id','winner');
+    let winner = document.createElement("div");
+    winner.setAttribute("id","winner");
 
-    var createText = "<h1>WINNER !!!</h1>";
+    let createText = "<h1>WINNER !!!</h1>";
     createText += "<p>Congratulations,<br/>you passed the stage...<br/>";
     createText += "<button id='btnWinner' onclick='NextPhase();'>CONTINUE</button></p>";
     
     winner.innerHTML = createText;
-    document.getElementById('body').appendChild(winner);
+    $("#body").html(winner);
 }
 
 function NextPhase(){
-    point = document.getElementById('points').innerHTML;
-    if(phase === 2){
-        var url = purl(window.location.href);
-        local = url.param('Location');
-        window.location.replace('phaseThree.html'+"?Points="+point+"&&Location="+local);
+    point = $("#points").innerHTML;
+    if(phase == 2){
+        let url = purl(window.location.href);
+        local = url.param("Location");
+        window.location.replace("phaseThree.html"+"?Points="+point+"&&Location="+local);
     }else{
-        window.location.replace('phaseTwo.html'+"?Points="+point+"&&Location="+local);
+        window.location.replace("phaseTwo.html"+"?Points="+point+"&&Location="+local);
     }
 }
 
@@ -504,29 +443,29 @@ function Reset(){
 }
 
 function Rank(keyPress){
-    if(keyPress == 113 && rankOn === false){
+    if(keyPress == 113 && rankOn == false){
         rankOn = true;
         
-        if(onStart === true && document.getElementById('C0') != undefined){
+        if(onStart == true && $("#C0") != undefined){
             clearInterval(RepeatWalk);
-            document.getElementById('btnInfo').setAttribute('disabled', 'disable');
-            document.getElementById('btnInfo').innerHTML = "CONTINUE";
+            $("#btnInfo").setAttribute("disabled", "disable");
+            $("#btnInfo").innerHTML = "CONTINUE";
         }
-        var dataJson = localStorage.getItem("Rank");
-        var arrayRank = JSON.parse(dataJson);
+        let dataJson = localStorage.getItem("Rank");
+        let arrayRank = JSON.parse(dataJson);
 
-        var div = document.createElement('div');
-        div.setAttribute('id', 'rank');
+        let div = document.createElement("div");
+        div.setAttribute("id", "rank");
         div.innerHTML = "<label id='close' onclick='CloseRank();'>X</label>";
 
-        document.getElementById('body').appendChild(div);
+        $("#body").html(div);
         
         if(arrayRank !== null){
             div.innerHTML += "<h1>BEST SCORES !!!</h1>";
 
-            var table = document.createElement('table');
-            table.setAttribute('id', 'bestScore');
-            var createTable = "<tr>";
+            let table = document.createElement("table");
+            table.setAttribute("id", "bestScore");
+            let createTable = "<tr>";
                     createTable += "<td class='title'>NAME</td>";
                     createTable += "<td class='title'>LOCATION</td>";
                     createTable += "<td class='title'>DAY/HOUR</td>";
@@ -542,7 +481,7 @@ function Rank(keyPress){
                 createTable += "</tr>";
             }
             table.innerHTML = createTable;
-            document.getElementById('rank').appendChild(table);
+            $("#rank").html(table);
         }else{
             div.innerHTML += "<h2>There are no scoring records...</h2>";
         }
@@ -550,11 +489,11 @@ function Rank(keyPress){
 }
 
 function CloseRank(){
-    document.getElementById('rank').remove();
-    if(onStart === true && document.getElementById('C0') != undefined && document.getElementById('information') == undefined){
-        document.getElementById('btnInfo').innerHTML = "PAUSE";
-        document.getElementById('btnInfo').removeAttribute('disabled');
-        ControlTime();
+    $("#rank").remove();
+    if(onStart == true && $("#C0") != undefined && $("#information") == undefined){
+        $("#btnInfo").innerHTML = "PAUSE";
+        $("#btnInfo").removeAttribute("disabled");
+        RepeatWalk();
     }
     rankOn = false;
 }

@@ -8,22 +8,35 @@
         <link rel="stylesheet" type="text/css" href="css/cssMain.css"/>
         <link rel="stylesheet" type="text/css" href="css/cssTable.css"/>
         
-        <script language="javascript" src="js/jsMain.js"></script>
-        <script language="javascript" src="js/purl.js"></script>
+        <script lang="javascript" src="js/jQuery3.3.1.js"></script>
+        <script lang="javascript" src="js/jsMain.js"></script>
+        <script lang="javascript" src="js/purl.js"></script>
         
     </head>
-    <body onkeypress="KeyPress();" onload="GeoLocation(); SaveName();" id="body">
+    <body id="body">
+        <div id="load">
+            <div id="enterName">
+                <h1>ENTER WITH YOUR NAME:</h1>
+                <input type="text" id="name" placeholder="Name" maxlength="20" autofocus value="aaa" /><br/>
+                <input type="submit" id="btnName" onclick="start();" disabled="disable"/>
+            </div>
+        </div>
+
         <header>   
             <p id="msgStart"></p>
-            <div>
+            
+            <div id="score"> 
                 <h2>Score</h2>
-                <h1>Points:&nbsp;</h1><div id="points"></div>
+                <h1>Points: <label id="points">0</label></h1>
             </div>
-            <button id="btnInfo" onclick="Info(8);">Information</button>
+
+            <button id="btnInfo" onclick="Info(8);" disabled="disabled">Information</button>
         </header> 
-        <section>   
-            <article id="game"></article>
+
+        <section>
+            <div id="game"></div>
         </section>
+
         <footer>
             <p>&COPY; Copyright 2017 - by Donato Cardoso</p>
         </footer>

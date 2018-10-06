@@ -1,22 +1,19 @@
 body {
     position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 1290px;
-    height: 600px;
-    margin-top: -300px;
-    margin-left: -645px;
-    border: 1px solid #000000;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI';
+    z-index: 1;
 }
 
-body div#information, div#enterName, div#winner, div#loser, div#rank{
+div#information, div#enterName, div#winner, div#loser, div#rank {
     position: absolute;
     left: 50%;
     top: 50%;
     background: #ffffff;
     border: 3px solid cadetblue;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 30px;
 }
 
 body div#information, div#rank{
@@ -44,12 +41,17 @@ body div#information label#close, body div#rank label#close{
     vertical-align: middle;
 }
 
-body div#enterName{
+body div#enterName {
     width: 250px;
-    height: 170px;
+    height: 200px;
     text-align: center;
+    margin-top: -100px;
     margin-left: -125px;
-    margin-top: -85px;
+}
+
+body div#enterName input#name {
+    padding: 3px;
+    margin-bottom: 10px;
 }
 
 body div#winner, div#loser{
@@ -94,37 +96,41 @@ body div#rank table#bestScore td.name{
     border-left: none;
 }
 
-header {
-    width: 1290px;
-    height: 50px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 13pt;
-}
-
-header div{
-    display: inline-block;
+body div#load {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(132, 132, 132, .5);
     position: absolute;
-    left: 600px;
+    z-index: 999;
+}
+
+header, section, footer {
+    width: 100%;
+    position: relative;
+    text-align: center;
+}
+
+header {
+    height: 10%;
+}
+
+header div#score {
+    width: auto;
+    margin: auto;
     color: gold;
-    text-shadow: 1px 0px 0px black, 
-                 -1px 0px 0px black, 
-                 0px 1px 0px black, 
-                 0px -1px 0px black;
-}
-
-header div div#points{
-    left: 70px;
-}
-
-header div h1{
-    font-size: 15pt;
-    margin-top: -10px;
+    text-align: left;
     display: inline-block;
+    -webkit-text-stroke-width: 0.5px;
+    -webkit-text-stroke-color: #000;
 }
 
-header div h2{
-    font-size: 8pt;
-    margin-top: 2px;
+header div#score h1 {
+    font-size: 20px;
+    margin-top: -10px;
+}
+
+header div#score h2 {
+    font-size: 12px;
 }
 
 header button#start{
@@ -132,10 +138,10 @@ header button#start{
     margin: 15px auto auto 15px;
 }
 
-header p{
-    color: rgb(8, 173, 123);
+header p {
+    float: left;
     font-weight: bold;
-    float:left;
+    color: rgb(8, 173, 123);
     margin: 12px auto auto 10px;
 }
 
@@ -145,24 +151,10 @@ header button#btnInfo{
 }
 
 section {
-    width: 1290px;
-    height: 500px;
+    height: 80%;
     background: #000000;
 }
 
-section article {
-    padding: auto;
-    padding-top: 8px;
-}
-
 footer {
-    width: 1290px;
-    height: 49px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 13pt;
-}
-
-footer p{
-    margin-top: 12px;
     text-align: center;
 }
