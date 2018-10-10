@@ -30,8 +30,7 @@ In phase 3, obstacles are added in the game and there is no limit of punctuation
 
 ## Playing Game
 
-To play use as a WASD trash or as Arrow keys, to play the game or to get more information, use a P key.
-
+> To play use as a WASD trash or as Arrow keys, to play the game or to get more information, use a P key.
 
 ## Release History
 
@@ -40,12 +39,12 @@ To play use as a WASD trash or as Arrow keys, to play the game or to get more in
 
 ## Meta
 
-Donato Cardoso Ávila - [GitHub](https://github.com/donatocardoso/snake-game) - [Linkedin](www.linkedin.com/in/donato-cardoso) - Email: donatocardoso11@gmail.com
+> Donato Cardoso Ávila - [GitHub](https://github.com/donatocardoso/snake-game) - [Linkedin](www.linkedin.com/in/donato-cardoso) - Email: donatocardoso11@gmail.com
 
 ## Contributing
 
-1. Fork it (<https://gitlab.com/donatocardoso/game-snake/forks/new>)
-2. Create your feature branch (`git checkout -b nameBranch`)
-3. Commit your changes (`git commit -am 'nameBranch - Add message'`)
-4. Push to the branch (`git push origin nameBranch`)
-5. Create a new Pull Request
+> 1. Fork it (<https://gitlab.com/donatocardoso/game-snake/forks/new>)
+> 2. Create your feature branch (`git checkout -b nameBranch`)
+> 3. Commit your changes (`git commit -am 'nameBranch - Add message'`)
+> 4. Push to the branch (`git push origin nameBranch`)
+> 5. Create a new Pull Request
