@@ -8,37 +8,45 @@ body {
     z-index: 1;
 }
 
-div#information, div#enterName, div#winner, div#loser, div#rank {
+div#information, div#enterName, div#winner, div#loser {
     position: absolute;
     left: 50%;
     top: 50%;
     background: #ffffff;
     border: 3px solid cadetblue;
+    z-index: 1000;
 }
 
-body div#information, div#rank{
+body div#information {
     width: 600px;
     height: 400px;
     margin-left: -300px;
     margin-top: -200px;
     padding-left: 50px;
+    text-align: left;
 }
 
-body div#information h1, div#rank h1{
+body div#information h1 {
     text-align: center;
     text-decoration: underline;
     color: cadetblue;
 }
 
-body div#information label#close, body div#rank label#close{
+div#information label#lblInformation {
     width: 30px;
     height: 30px;
-    line-height: 30px;
-    background: crimson;
-    color: floralwhite;
     float: right;
+    color: white;
+    margin: -10px;
+    cursor: pointer;
+    line-height: 30px;
     text-align: center;
-    vertical-align: middle;
+    background: red;
+    border-radius: 15px;
+}
+
+div#information span {
+    text-align: left;
 }
 
 body div#enterName {
@@ -62,41 +70,16 @@ body div#winner, div#loser{
     margin-top: -90px;
 }
 
-body div#winner h1, div#loser h1{
+body div#winner h1, div#loser h1 {
     text-decoration: underline;
     color: cadetblue;
 }
 
-body div#winner button#btnWinner, div#loser button#btnLoser{
+body div#winner button#btnWinner, div#loser button#btnLoser {
     margin-top: 10px;
 }
-    
-body div#rank h1{
-    margin-top: 5px; 
-}
 
-body div#rank table#bestScore{
-    border-spacing: 0px;
-    margin-top: -5px;
-}
-
-body div#rank table#bestScore td.title{
-    background: gainsboro;
-    font-weight: bold;
-    padding: 5px;
-}
-
-body div#rank table#bestScore td.name, td.local, td.date, td.point{
-    padding: 5px;
-    border-left: 1px solid black;
-    border-bottom: 1px solid black;
-}
-
-body div#rank table#bestScore td.name{
-    border-left: none;
-}
-
-body div#load {
+body div#background {
     width: 100%;
     height: 100%;
     background-color: rgba(132, 132, 132, .5);
@@ -133,7 +116,7 @@ header div#score h2 {
     font-size: 12px;
 }
 
-header button#start{
+header button#start {
     float: left;
     margin: 15px auto auto 15px;
 }
@@ -145,7 +128,7 @@ header p {
     margin: 12px auto auto 10px;
 }
 
-header button#btnInfo{
+header button#btnInfo {
     float: right;
     margin: 15px 15px auto auto;
 }

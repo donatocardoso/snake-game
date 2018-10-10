@@ -14,12 +14,11 @@
         
     </head>
     <body id="body">
-        <div id="load">
-            <div id="enterName">
-                <h1>ENTER WITH YOUR NAME:</h1>
-                <input type="text" id="name" placeholder="Name" maxlength="20" autofocus value="aaa" /><br/>
-                <input type="submit" id="btnName" onclick="start();" disabled="disable"/>
-            </div>
+        <div id="background"></div>
+        <div id="enterName">
+            <h1>ENTER WITH YOUR NAME:</h1>
+            <input type="text" id="name" placeholder="Name" maxlength="20" autofocus value="aaa" /><br/>
+            <input type="submit" id="btnName" onclick="start();" disabled="disable"/>
         </div>
 
         <header>   
@@ -30,10 +29,39 @@
                 <h1>Points: <label id="points">0</label></h1>
             </div>
 
-            <button id="btnInfo" onclick="Info(8);" disabled="disabled">Information</button>
+            <button id="btnInfo" onclick="information();">Information</button>
         </header> 
 
         <section>
+            <div id="winner" style="display: none;">
+                <h1>WINNER !!!</h1>
+                <p>
+                    Congratulations,<br/>
+                    you passed the stage...<br/>
+                    <button id="btnWinner" onclick="phase++; start();">CONTINUE</button>
+                </p>
+            </div>
+
+            <div id="loser" style="display: none;">
+                <h1>LOSER !!!</h1>
+                <p>
+                    How annoying, you lost ...<br/>
+                    <button id="btnLoser" onclick="reset();">BACK</button>
+                </p>
+            </div>
+
+            <div id="information" style="display: none;">
+                <label id="lblInformation" onclick="closeInfo();">X</label>
+
+                <h1>INFORMATIONS</h1>
+
+                <span>1. <img src="img/setas.jpg"/> The arrows control the snake.<br/></span>
+                <span>2. <img src="img/wasd.png"/> The keys W A S and D also control the snake.<br/></span>
+                <span>3. To pass the stage you need to make 30 points.<br/></span>
+                <span>4. You can see the ranking of the best games with the F2 key.<br/></span>
+                <span>5. You can see the informatons about the game with the BACKSPACE key.<br/></span></p>
+            </div>
+
             <div id="game"></div>
         </section>
 
