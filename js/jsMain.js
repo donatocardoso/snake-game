@@ -1,6 +1,6 @@
 // Declaration of letiables
 let wallTop = [], wallRight = [], wallBottom = [], wallLeft = [], direction = ["RIGHT"], wallInsideField = [];
-let arrayRank = [], countRow = 0, countColumn = 0, numberBody = 3, time = 600, phase = 1, point = 0;
+let arrayRank = [], countRow = 0, countColumn = 0, numberBody = 3, time = 600, phase = 3, point = 0;
 let snake, follow, city, state, country, name, geoLocation, local;
 
 // Event declaration

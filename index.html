@@ -1,8 +1,9 @@
 ﻿<!DOCTYPE html>
 
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
     <head>
-        <title>Snake - Phase One</title>
+        <title>Snake Game</title>
+        <link rel="shortcut icon" href="img/snakeGame.jpg" />
 
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <link rel="stylesheet" type="text/css" href="css/cssMain.css"/>
@@ -10,14 +11,13 @@
         
         <script lang="javascript" src="js/jQuery3.3.1.js"></script>
         <script lang="javascript" src="js/jsMain.js"></script>
-        <script lang="javascript" src="js/purl.js"></script>
         
     </head>
     <body id="body">
         <div id="background"></div>
         <div id="enterName">
             <h1>ENTER WITH YOUR NAME:</h1>
-            <input type="text" id="name" placeholder="Name" maxlength="20" autofocus value="aaa" /><br/>
+            <input type="text" id="name" placeholder="Name" maxlength="20" autofocus /><br/>
             <input type="submit" id="btnName" onclick="start();" disabled="disable"/>
         </div>
 
@@ -55,11 +55,11 @@
 
                 <h1>INFORMATIONS</h1>
 
-                <span>1. <img src="img/setas.jpg"/> The arrows control the snake.<br/></span>
+                <span>1. <img src="img/arrows.jpg"/> The arrows control the snake.<br/></span>
                 <span>2. <img src="img/wasd.png"/> The keys W A S and D also control the snake.<br/></span>
-                <span>3. To pass the stage you need to make 30 points.<br/></span>
-                <span>4. You can see the ranking of the best games with the F2 key.<br/></span>
-                <span>5. You can see the informatons about the game with the BACKSPACE key.<br/></span></p>
+                <span>3. To pass the 1º phase you need to make 30 points.<br/></span>
+                <span>3. To pass the 2º phase you need to make 70 points.<br/></span>
+                <span>5. You can see the informatons or stop the game press 'P'.<br/></span></p>
             </div>
 
             <div id="game"></div>
