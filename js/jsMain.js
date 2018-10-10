@@ -1,7 +1,7 @@
 // Declaration of letiables
 let wallTop = [], wallRight = [], wallBottom = [], wallLeft = [], direction = ["RIGHT"], wallInsideField = [];
-let arrayRank = [], countRow = 0, countColumn = 0, numberBody = 3, time = 600, phase = 1;
-let snake, follow, city, state, country, name, point = 28, geoLocation, local;
+let arrayRank = [], countRow = 0, countColumn = 0, numberBody = 3, time = 600, phase = 1, point = 0;
+let snake, follow, city, state, country, name, geoLocation, local;
 
 // Event declaration
 $(document).ready(function()
@@ -94,9 +94,8 @@ async function start()
         }
 
         if(phase == 3)
-        {
-
-        }
+            for(let i = 0; i < 15; i++)
+                await createObstacles();
     }
 
     let startPosition = parseInt($("div#game table tr:nth(5) td:nth(4)")[0].id);
@@ -173,15 +172,17 @@ function setRepeatWalk()
             else
             {
                 clearInterval(repeatWalk);
-                SaveCache();
+                $("div#background").show();
+                $("div#loser").slideDown("fast");
             }
         }
         catch(e)
         {
             clearInterval(repeatWalk);
-            $("div#background").slideDown(
-                alert("OPS! Ocorreu um erro inesperado, atualize a pagina e continue jogando...")
-            );
+
+            $("div#background").show();
+            $("div#winner").slideDown("fast");
+            alert("OPS! Ocorreu um erro inesperado, atualize a pagina e continue jogando...");
             
             console.log(e);         
         }
@@ -247,6 +248,20 @@ function loadBackground()
     $("#game").html($(table));
 }
 
+// Create obstacles
+function createObstacles()
+{
+    let positionWall = Math.round(Math.random() * parseInt($("td").length));
+
+    if(wallTop.includes(positionWall)      || wallRight.includes(positionWall) ||
+       wallBottom.includes(positionWall)   || wallLeft.includes(positionWall))
+       return createObstacles();
+
+    wallInsideField.push(positionWall);
+    $("td#" + positionWall).attr("class", "wall");
+    return;
+}
+
 // Create food
 function createFood()
 {
@@ -273,15 +288,12 @@ function createFood()
                         !wallInsideField.includes(positionFood); // Obstacles
     }
 
-    if(validPosition)
-    {
-        let food = $("<div></div>").attr("id","food").css("background", color());
-        $("td#" + positionFood).html(food);
+    if(!validPosition)
+        return createFood();
 
-        return;
-    }
-
-    return createFood();
+    let food = $("<div></div>").attr("id","food").css("background", color());
+    $("td#" + positionFood).html(food);
+    return;
 }
 
 // Get the next cell
@@ -357,8 +369,8 @@ function passedPhase()
     direction = ["RIGHT"];
     wallInsideField = [];
 
-    $("div#winner").show();
     $("div#background").show();
+    $("div#winner").slideDown("fast");
 }
 
 // Show informations about the game
@@ -366,9 +378,9 @@ function information()
 {
     if(!$("button#btnInfo").prop("disabled"))
     {
-        $("div#background").show();
         clearInterval(repeatWalk);
 
+        $("div#background").show();
         $("div#information").slideDown("fast");
         $("button#btnInfo").text("CONTINUE").prop("disabled", true);
     }
