@@ -13,16 +13,16 @@ In phase 3, obstacles are added in the game and there is no limit of punctuation
             <td>* Phase One:</td>
         </tr>
         <tr>
-            <td><kbd><img src="img/login.jpg" width="300" /></kbd></td>
-            <td><kbd><img src="img/phaseOne.jpg" width="300" /></kbd></td>
+            <td><kbd><img src="public/img/login.jpg" width="300" /></kbd></td>
+            <td><kbd><img src="public/img/phaseOne.jpg" width="300" /></kbd></td>
         </tr>
         <tr>
             <td>* Phase Two:</td>
             <td>* Phase Three:</td>
         </tr>
         <tr>
-            <td><kbd><img src="img/phaseTwo.jpg" width="300" /></kbd></td>
-            <td><kbd><img src="img/phaseThree.jpg" width="300" /></kbd></td>
+            <td><kbd><img src="public/img/phaseTwo.jpg" width="300" /></kbd></td>
+            <td><kbd><img src="public/img/phaseThree.jpg" width="300" /></kbd></td>
         </tr>
     <tbody>
 </table>
