@@ -14,7 +14,11 @@ $(document).ready(function()
     }
     else
     {
-        $("div#game").css("width", window.innerWidth).css("height", (window.innerHeight * 0.8));
+        let width = (window.innerWidth % 2) == 0 ? window.innerWidth : window.innerWidth + 1;
+        let height = Math.floor(window.innerHeight * 0.8);
+        height = (height % 2) == 0 ? height : height - 1;
+
+        $("div#game").css("width", width).css("height", height);
     
         // Receives the user"s GeoLocation
         navigator.geolocation.getCurrentPosition(function(posicao)
