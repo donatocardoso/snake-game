@@ -1,59 +1,70 @@
 // Declaration of letiables
 let wallTop = [], wallRight = [], wallBottom = [], wallLeft = [], direction = ["RIGHT"], wallInsideField = [];
-let arrayRank = [], countRow = 0, countColumn = 0, numberBody = 3, time = 600, phase = 3, point = 0;
+let arrayRank = [], countRow = 0, countColumn = 0, numberBody = 3, time = 600, phase = 1, point = 0;
 let snake, follow, city, state, country, name, geoLocation, local;
 
 // Event declaration
 $(document).ready(function()
 {
-    // Receives the user"s GeoLocation
-    navigator.geolocation.getCurrentPosition(function(posicao)
+    // Set size for the field of game
+    if(window.innerWidth < 520 || window.innerHeight < 530)
     {
-        let url =   "http://nominatim.openstreetmap.org/reverse?lat=" + posicao.coords.latitude+
-                    "&lon=" + posicao.coords.longitude + "&format=json&json_callback=fillInData";
-
-        $("body").append($("<script></script>").attr("src", url));
-    });
-
-    // Reads the key that was pressed
-    $("body").keypress(function(e)
+        $("div#background, div#failed").show();
+        $("div#enterName, header, section, footer").hide();
+    }
+    else
     {
-        e = e || window.event;
-        let keyPress = e.key.toString() || e.code.toString();
-
-        let keys = [
-            "w", "a", "s", "d", "KeyW", "KeyA", "KeyS", "KeyD",
-            "ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"
-        ];
-        console.log(keyPress);
-        if($("#C0").length && keys.includes(keyPress))
-        {
-            let goesBy = (
-                (["a", "KeyA", "ArrowLeft"].includes(keyPress) && direction[0] != "RIGHT" )
-                    ? "LEFT"
-                    : (["w", "KeyW", "ArrowUp"].includes(keyPress) && direction[0] != "BOTTOM" )
-                        ? "TOP"
-                        : (["d", "KeyD", "ArrowRight"].includes(keyPress) && direction[0] != "LEFT" )
-                            ? "RIGHT"
-                            : (["s", "KeyS", "ArrowDown"].includes(keyPress) && direction[0] != "TOP" )
-                                ? "BOTTOM"
-                                : null
-            );
+        $("div#game").css("width", window.innerWidth).css("height", (window.innerHeight * 0.8));
     
-            if(goesBy)
-                direction.unshift(goesBy);
-        }
-        else if(keyPress == "p" || keyPress == "KeyP")
+        // Receives the user"s GeoLocation
+        navigator.geolocation.getCurrentPosition(function(posicao)
         {
-            information();
-        }
-    });
+            let url =   "http://nominatim.openstreetmap.org/reverse?lat=" + posicao.coords.latitude+
+                        "&lon=" + posicao.coords.longitude + "&format=json&json_callback=fillInData";
 
-    //Enable button to save user name
-    $("input#name").keypress(function()
-    {
-        $("input#btnName").prop("disabled", $("input#name").val().length < 2);
-    });
+            $("body").append($("<script></script>").attr("src", url));
+        });
+
+        // Reads the key that was pressed
+        $("body").keypress(function(e)
+        {
+            e = e || window.event;
+            let keyPress = e.key.toString() || e.code.toString();
+
+            let keys = [
+                "w", "a", "s", "d", "KeyW", "KeyA", "KeyS", "KeyD",
+                "ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"
+            ];
+
+            if($("#C0").length && keys.includes(keyPress))
+            {
+                let goesBy = (
+                    (["a", "KeyA", "ArrowLeft"].includes(keyPress) && direction[0] != "RIGHT" )
+                        ? "LEFT"
+                        : (["w", "KeyW", "ArrowUp"].includes(keyPress) && direction[0] != "BOTTOM" )
+                            ? "TOP"
+                            : (["d", "KeyD", "ArrowRight"].includes(keyPress) && direction[0] != "LEFT" )
+                                ? "RIGHT"
+                                : (["s", "KeyS", "ArrowDown"].includes(keyPress) && direction[0] != "TOP" )
+                                    ? "BOTTOM"
+                                    : null
+                );
+        
+                if(goesBy)
+                    direction.unshift(goesBy);
+            }
+            else if(keyPress == "p" || keyPress == "KeyP")
+            {
+                information();
+            }
+        });
+
+        //Enable button to save user name
+        $("input#name").on("input", function()
+        {
+            $("input#btnName").prop("disabled", $("input#name").val().length < 3);
+        });
+    }
 
 });
 
@@ -215,8 +226,8 @@ function loadBackground()
     let createTable = "";
 
     let divGame = {
-        width: $("div#game").css("width").replace("px", ""),
-        height: $("div#game").css("height").replace("px", "")
+        width: $("div#game").innerWidth(),
+        height: $("div#game").innerHeight()
     };
 
     countRow = Math.floor(divGame.height / 28);
@@ -245,7 +256,7 @@ function loadBackground()
     }
 
     $(table).html(createTable);
-    $("#game").html($(table));
+    $("div#game").html($(table));
 }
 
 // Create obstacles

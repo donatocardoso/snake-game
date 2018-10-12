@@ -15,10 +15,18 @@
     </head>
     <body id="body">
         <div id="background"></div>
+        
         <div id="enterName">
             <h1>ENTER WITH YOUR NAME:</h1>
             <input type="text" id="name" placeholder="Name" maxlength="20" autofocus /><br/>
             <input type="submit" id="btnName" onclick="start();" disabled="disable"/>
+        </div>
+
+        <div id="failed" style="display: none;">
+            <h1>FAILED !!!</h1>
+            <p>
+                Sorry, your browser doesn't support the minimum recommended size...
+            </p>
         </div>
 
         <header>   
