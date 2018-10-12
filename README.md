@@ -39,7 +39,7 @@ In phase 3, obstacles are added in the game and there is no limit of punctuation
 
 ## Meta
 
-> Donato Cardoso Ávila - [GitHub](https://github.com/donatocardoso/snake-game) - [Linkedin](www.linkedin.com/in/donato-cardoso) - Email: donatocardoso11@gmail.com
+> Donato Cardoso Ávila - [GitHub](https://github.com/donatocardoso/snakegame) - [Linkedin](www.linkedin.com/in/donato-cardoso) - Email: donatocardoso11@gmail.com
 
 ## Contributing
 
