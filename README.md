@@ -39,11 +39,11 @@ In phase 3, obstacles are added in the game and there is no limit of punctuation
 
 ## Meta
 
-> Donato Cardoso Ávila - [GitHub](https://github.com/donatocardoso/snakegame) - [Linkedin](www.linkedin.com/in/donato-cardoso) - Email: donatocardoso11@gmail.com
+> Donato Cardoso Ávila - [GitLab](https://gitlab.com/donatocardoso) - [Linkedin](www.linkedin.com/in/donato-cardoso) - Email: donatocardoso11@gmail.com
 
 ## Contributing
 
-> 1. Fork it (<https://gitlab.com/donatocardoso/game-snake/forks/new>)
+> 1. Fork it (<https://gitlab.com/donatocardoso/snake-game>)
 > 2. Create your feature branch (`git checkout -b nameBranch`)
 > 3. Commit your changes (`git commit -am 'nameBranch - Add message'`)
 > 4. Push to the branch (`git push origin nameBranch`)
